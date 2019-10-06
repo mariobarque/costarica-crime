@@ -54,14 +54,15 @@ def parse_csv(csv, row):
     return crimes
 
 
-df = pd.read_csv('data/input/distritos.csv')
+df = pd.read_csv('data/distritos.csv')
 all_crimes = pd.DataFrame(columns=crime_cols)
 for index, row in df.iterrows():
+    print(row['Province'] + ' ' + row['Canton'])
     code = row['Code']
     csv = download_csv(code)
     crimes = parse_csv(csv, row)
     df = pd.DataFrame(crimes, columns=crime_cols)
     all_crimes = all_crimes.append(df, ignore_index=True)
 
-all_crimes.to_csv('all_crimes.csv', encoding='utf-8-sig')
+all_crimes.to_csv('data/all_crimes.csv', encoding='utf-8-sig')
 
