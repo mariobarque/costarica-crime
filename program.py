@@ -18,6 +18,9 @@ def load_data(spark):
 spark = SparkSession.builder.appName('database').master('local').getOrCreate()
 colegios_df, escuelas_df, extranjeros_colegios_df, extranjeros_escuelas_df, distritos_df, crimenes_df = load_data(spark)
 
-colegios_grouped_df = colegios_df.groupby('ZIPCODE').count()
+colegios_grouped_df = colegios_df \
+    .groupby('ZIPCODE') \
+    .agg({'MFT': 'sum', 'MFH': 'sum', 'MFM': 'sum', 'RET': 'sum',
+          'REH': 'sum', 'REM': 'sum', 'APT': 'sum', 'APH': 'sum', 'APM': 'sum'})
 
 colegios_grouped_df.show()
