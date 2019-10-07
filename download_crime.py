@@ -64,5 +64,5 @@ for index, row in df.iterrows():
     df = pd.DataFrame(crimes, columns=crime_cols)
     all_crimes = all_crimes.append(df, ignore_index=True)
 
-all_crimes.to_csv('data/all_crimes.csv', encoding='utf-8-sig')
+all_crimes.to_csv('data/crimenes.csv', encoding='utf-8-sig')
 
