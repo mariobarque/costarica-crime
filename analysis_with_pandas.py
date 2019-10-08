@@ -137,10 +137,10 @@ def group_crimenes(crimenes_df):
     crimenes_df = pd.concat([crimenes_df, pd.get_dummies(crimenes_df['CATEGORY'])], axis=1)
     group = crimenes_df.groupby(['ZIPCODE'])
 
-    df = group.agg(ASALTO=('ASALTO', 'count'),
-                   HOMICIDIO=('HOMICIDIO', 'count'),
-                   HURTO=('HURTO', 'count'),
-                   ROBO=('ROBO', 'count'),
+    df = group.agg(ASALTO=('ASALTO', 'sum'),
+                   HOMICIDIO=('HOMICIDIO', 'sum'),
+                   HURTO=('HURTO', 'sum'),
+                   ROBO=('ROBO', 'sum'),
                    ROBO_VEHICULO=('ROBO DE VEHICULO', 'sum'),
                    TACHA_VEHICULO=('TACHA DE VEHICULO', 'sum'))
 
