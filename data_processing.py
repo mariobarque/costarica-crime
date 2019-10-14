@@ -36,7 +36,8 @@ def process_escuelas(escuelas_csv):
 
     group = colegios_csv.groupby('ZIPCODE')
     df = group.agg({'MFT': 'sum', 'MFH': 'sum', 'MFM': 'sum', 'RET': 'sum', 'REH': 'sum', 'REM': 'sum', 'APT': 'sum',
-                    'APH': 'sum', 'APM': 'sum', 'EPU': 'sum', 'EPR': 'sum', 'ESV': 'sum', 'EUR': 'sum', 'ERU': 'sum'})\
+                    'APH': 'sum', 'APM': 'sum', 'SECTOR_1': 'sum', 'SECTOR_2': 'sum', 'SECTOR_3': 'sum',
+                    'ZONA_1': 'sum', 'ZONA_2': 'sum'})\
         .withColumnRenamed("SUM(MFT)", "ETM")\
         .withColumnRenamed("SUM(MFH)", "EHM") \
         .withColumnRenamed("SUM(MFM)", "EMM") \
@@ -69,7 +70,8 @@ def process_colegios(colegios_csv):
 
     group = colegios_csv.groupby('ZIPCODE')
     df = group.agg({'MFT': 'sum', 'MFH': 'sum', 'MFM': 'sum', 'RET': 'sum', 'REH': 'sum', 'REM': 'sum', 'APT': 'sum',
-                    'APH': 'sum', 'APM': 'sum', 'CPU': 'sum', 'CPR': 'sum', 'CSV': 'sum', 'CUR': 'sum', 'CRU': 'sum'})\
+                    'APH': 'sum', 'APM': 'sum', 'SECTOR_1': 'sum', 'SECTOR_2': 'sum', 'SECTOR_3': 'sum',
+                    'ZONA_1': 'sum', 'ZONA_2': 'sum'})\
         .withColumnRenamed("SUM(MFT)", "CTM")\
         .withColumnRenamed("SUM(MFH)", "CHM") \
         .withColumnRenamed("SUM(MFM)", "CMM") \
@@ -98,12 +100,13 @@ def process_crimenes(crimenes_df):
 
     crimenes_df = crimenes_df.select(crimenes_df.columns + cat_exprs)
     group = crimenes_df.groupby('ZIPCODE')
-    df = group.agg({'HOMICIDIO': 'sum', 'HURTO': 'sum', 'ROBO': 'sum', 'ROBO DE VEHICULO': 'sum',
-                    'TACHA DE VEHICULO': 'sum'})\
-        .withColumnRenamed("SUM(HOMICIDIO)", "HOMICIDIO")\
+    df = group.agg({'HOMICIDIO': 'sum', 'ASALTO': 'sum', 'HURTO': 'sum', 'ROBO': 'sum',
+                    'ROBO DE VEHICULO': 'sum', 'TACHA DE VEHICULO': 'sum'})\
+        .withColumnRenamed("SUM(HOMICIDIO)", "HOMICIDIO") \
+        .withColumnRenamed("SUM(ASALTO)", "ASALTO") \
         .withColumnRenamed("SUM(HURTO)", "HURTO")\
         .withColumnRenamed("SUM(ROBO)", "ROBO")\
-        .withColumnRenamed("SUM(ROBO DE VEHICULO)", "HROBO_VEHICULO")\
+        .withColumnRenamed("SUM(ROBO DE VEHICULO)", "ROBO_VEHICULO")\
         .withColumnRenamed("SUM(TACHA DE VEHICULO)", "TACHA_VEHICULO")
 
     return df
@@ -130,10 +133,12 @@ def add_calculated_columns(df):
     df = df.withColumn('ET', df['EPU'] + df['EPR'] + df['ESV'])
     df = df.withColumn('EPPR', df['EPR'] / df['ET'])
     df = df.withColumn('EPRU', df['ERU'] / df['ET'])
+    df = df.withColumn('EPHM', df['EHM'] / df['EMM'])
 
     df = df.withColumn('CT', df['CPU'] + df['CPR'] + df['CSV'])
     df = df.withColumn('CPPR', df['CPR'] / df['CT'])
     df = df.withColumn('CPRU', df['CRU'] / df['CT'])
+    df = df.withColumn('CPHM', df['CHM'] / df['CMM'])
 
     df = df.withColumn('TASA_ASALTO', df['ASALTO'] / df['POBLACION_2016'])
     df = df.withColumn('TASA_HOMICIDIO', df['HOMICIDIO'] / df['POBLACION_2016'])
@@ -165,4 +170,4 @@ if __name__ == "__main__":
                                         colegios_extranjeros_grouped, crimenes_grouped)
     distritos_df = add_calculated_columns(distritos_df)
 
-    distritos_df.show()
+    distritos_df.toPandas().to_csv('data/processed/dataset.csv')

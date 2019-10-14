@@ -39,6 +39,7 @@ Nomenclatura datos procesados:
     ET = Escuelas en Total
     EPPR = Escuelas Proporcion de Privadas
     EPRU = Escuelas Proporcion de Rurales
+    EPHM = Escuelas Proporcion Hombres Mujeres
     
     CTM = Colegios Total Matricualados
     CHM = Colegios Hombres Matricualados
@@ -62,6 +63,7 @@ Nomenclatura datos procesados:
     CT = Colegios en Total
     CPPR = Colegios Proporcion de Privados
     CPRU = Colegios Proporcion de Rurales
+    CPHM = Colegios Proporcion Hombres Mujeres
     
     TCP = Tasa Crecimiento de Población (2011 - 2016)  
 """
@@ -174,10 +176,12 @@ df['CPEXM'] = df['CEXM'] / df['CTM']
 df['ET'] = df['EPU'] + df['EPR'] + df['ESV']
 df['EPPR'] = df['EPR'] / df['ET']
 df['EPRU'] = df['ERU'] / df['ET']
+df['EPHM'] = df['EHM'] / df['EMM']
 
 df['CT'] = df['CPU'] + df['CPR'] + df['CSV']
 df['CPPR'] = df['CPR'] / df['CT']
 df['CPRU'] = df['CRU'] / df['CT']
+df['CPHM'] = df['CHM'] / df['CMM']
 
 df['TASA_ASALTO'] = df['ASALTO'] / df['POBLACION_2016']
 df['TASA_HOMICIDIO'] = df['HOMICIDIO'] / df['POBLACION_2016']
