@@ -157,7 +157,7 @@ extranjeros_escuelas_df = pd.read_csv('data/extranjeros_escuelas.csv')
 crimenes_df = pd.read_csv('data/crimenes.csv')
 
 grouped_escuelas = group_escuelas(escuelas_df)
-grouped_colegios = group_colegios(colegios_df)
+grouped_colegios = group_clegios(colegios_df)
 grouped_estranjeros_escuelas = group_extranjeros_escuelas(extranjeros_escuelas_df)
 grouped_estranjeros_colegios = group_extranjeros_colegios(extranjeros_escuelas_df)
 grouped_crimenes_df = group_crimenes(crimenes_df)
