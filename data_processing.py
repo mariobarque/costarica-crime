@@ -71,7 +71,7 @@ def save_dataset_to_db(df, database_name, database_user_name, database_password,
         .save()
 
 
-def get_data_set_from_db(database_name, database_user_name, database_password, database_table):
+def get_data_set_from_db(spark, database_name, database_user_name, database_password, database_table):
     df = spark \
         .read \
         .format("jdbc") \
@@ -82,23 +82,3 @@ def get_data_set_from_db(database_name, database_user_name, database_password, d
         .load()
 
     return df
-
-
-if __name__ == "__main__":
-    spark = SparkSession.builder.appName('database').master('local')\
-                                .appName("Basic JDBC pipeline") \
-                                .config("spark.driver.extraClassPath", "postgresql-42.1.4.jar") \
-                                .config("spark.executor.extraClassPath", "postgresql-42.1.4.jar") \
-                                .getOrCreate()
-
-    #distritos_df = get_merged_data(spark, 'data/distritos.csv', 'data/crimenes.csv',
-    #                               'data/escuelas.csv', 'data/colegios.csv',
-    #                               'data/extranjeros_escuelas.csv', 'data/extranjeros_colegios.csv',
-    #                               'data/processed/dataset.csv')
-
-
-    df = get_data_set_from_db(database_name, database_user_name, database_password, database_table)
-    df.show()
-
-    #save_to_database(distritos_df, database_name, database_user_name, database_password, database_table)
-

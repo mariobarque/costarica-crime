@@ -120,24 +120,3 @@ def merge_distritos_data(distritos_df, escuelas_grouped, colegios_grouped, escue
     distritos_df = distritos_df.join(crimenes_grouped, on='ZIPCODE', how='left')
 
     return distritos_df
-
-
-#####################################################################################################################
-#####################################################################################################################
-#####################################################################################################################
-
-from pyspark.sql import SparkSession
-
-spark_session = SparkSession.builder.appName('database').master('local').getOrCreate()
-
-cols = ['SECTOR', 'ZONA', 'ZIPCODE', 'MFT', 'MFH', 'MFM', 'RET', 'REH', 'REM', 'APT', 'APH', 'APM']
-colegios_data = [(1, 1, 1, 10, 5, 5, 2, 1, 1, 8, 4, 4),
-                 (2, 2, 1, 10, 5, 5, 2, 1, 1, 8, 4, 4),
-                 (3, 1, 1, 10, 5, 5, 2, 1, 1, 8, 4, 4),
-                 (2, 1, 2, 10, 5, 5, 2, 1, 1, 8, 4, 4),
-                 (2, 1, 2, 10, 5, 5, 2, 1, 1, 8, 4, 4)]
-escuelas_df = spark_session.createDataFrame(colegios_data, cols)
-
-target_df = process_colegios(escuelas_df)
-
-target_df.show()
